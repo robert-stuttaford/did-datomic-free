@@ -1,0 +1,33 @@
+<configuration debug="false">
+  <!-- prevent per-message overhead for jul logging calls, e.g. Hornet -->
+  <contextListener class="ch.qos.logback.classic.jul.LevelChangePropagator">
+    <resetJUL>true</resetJUL>
+  </contextListener>
+
+  <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+    <encoder>
+      <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level - %logger{36} - %msg%n</pattern>
+    </encoder>
+  </appender>
+
+  <appender name="DATOMIC-PEER" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <file>logs/datomic-peer.log</file>
+    <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+      <fileNamePattern>logs/datomic-peer_%d{yyyy-MM-dd}.log</fileNamePattern>
+      <maxHistory>7</maxHistory>
+    </rollingPolicy>
+    <encoder>
+      <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level - %logger{36} - %msg%n</pattern>
+    </encoder>
+  </appender>
+
+  <logger name="datomic" level="INFO" additivity="false">
+    <appender-ref ref="DATOMIC-PEER"/>
+  </logger>
+  
+  <root level="INFO">
+    <appender-ref ref="STDOUT"/>
+    <appender-ref ref="MAIN"/>
+    <appender-ref ref="JSON"/>
+  </root>
+</configuration>
